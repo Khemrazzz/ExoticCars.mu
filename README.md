@@ -1,6 +1,6 @@
-# test_repo
+# exotic_cars_apk
 
-A new Flutter project.
+Mobile app for Exotic Cars showroom
 
 ## Getting Started
 

@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "test_repo" "\0"
+            VALUE "CompanyName", "com.iTech" "\0"
+            VALUE "FileDescription", "exotic_cars_apk" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "test_repo" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2025 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "test_repo.exe" "\0"
-            VALUE "ProductName", "test_repo" "\0"
+            VALUE "InternalName", "exotic_cars_apk" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2025 com.iTech. All rights reserved." "\0"
+            VALUE "OriginalFilename", "exotic_cars_apk.exe" "\0"
+            VALUE "ProductName", "exotic_cars_apk" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

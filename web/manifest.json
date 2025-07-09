@@ -1,11 +1,11 @@
 {
-    "name": "test_repo",
-    "short_name": "test_repo",
+    "name": "exotic_cars_apk",
+    "short_name": "exotic_cars_apk",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "Mobile app for Exotic Cars showroom",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
