@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../home/home_screen.dart';
 import 'register_screen.dart';
+import 'forgot_password_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -49,53 +50,102 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              SwitchListTile(
-                title: const Text("Login using Email / Phone"),
-                subtitle: Text(_isEmailLogin ? "Email" : "Phone"),
-                value: _isEmailLogin,
-                onChanged: (val) => setState(() => _isEmailLogin = val),
-              ),
-              TextFormField(
-                controller: _contact,
-                decoration: InputDecoration(
-                  labelText: _isEmailLogin ? "Email" : "Phone Number",
+      backgroundColor: Colors.black,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 40),
+                const Text(
+                  'Log In',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                validator: (value) =>
-                value == null || value.isEmpty ? 'Required' : null,
-              ),
-              TextFormField(
-                controller: _password,
-                decoration: const InputDecoration(labelText: "Password"),
-                obscureText: true,
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) login();
-                },
-                child: const Text('Login'),
-              ),
-              const SizedBox(height: 16),
-              TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => const RegisterScreen()),
-                  );
-                },
-                child: const Text("Don't have an account? Register here"),
-              ),
-            ],
+                const SizedBox(height: 32),
+                SwitchListTile(
+                  title: const Text("Login using Email / Phone",
+                      style: TextStyle(color: Colors.white)),
+                  subtitle: Text(
+                    _isEmailLogin ? "Email" : "Phone",
+                    style: const TextStyle(color: Colors.white70),
+                  ),
+                  value: _isEmailLogin,
+                  onChanged: (val) => setState(() => _isEmailLogin = val),
+                ),
+                const SizedBox(height: 16),
+                _buildInput(_contact, _isEmailLogin ? 'Email' : 'Phone Number'),
+                const SizedBox(height: 16),
+                _buildInput(_password, 'Password', obscure: true),
+                const SizedBox(height: 8),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => const ForgotPasswordScreen()),
+                    ),
+                    child: const Text('Forgot Password?',
+                        style: TextStyle(color: Colors.amber)),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.amber[700],
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                    ),
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) login();
+                    },
+                    child:
+                    const Text('Log In', style: TextStyle(fontSize: 16)),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Center(
+                  child: TextButton(
+                    onPressed: () => Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => const RegisterScreen()),
+                    ),
+                    child: const Text("Don't have an account? Sign Up",
+                        style: TextStyle(color: Colors.amber)),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildInput(TextEditingController controller, String label,
+      {bool obscure = false}) {
+    return TextFormField(
+      controller: controller,
+      obscureText: obscure,
+      style: const TextStyle(color: Colors.white),
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: const TextStyle(color: Colors.white70),
+        filled: true,
+        fillColor: Colors.grey[900],
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+      ),
+      validator: (value) =>
+      value == null || value.trim().isEmpty ? 'Required' : null,
     );
   }
 }
