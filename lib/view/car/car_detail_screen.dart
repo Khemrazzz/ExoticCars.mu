@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'request_quote_screen.dart';
+import '../quote/request_quote_screen.dart';
 import '../../core/widgets/primary_button.dart';
 import '../../core/constants/color_scheme.dart';
 

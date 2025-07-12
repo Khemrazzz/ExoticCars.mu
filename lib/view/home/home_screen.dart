@@ -3,7 +3,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/services/auth_service.dart';
 import '../../core/constants/color_scheme.dart';
 import '../auth/login_screen.dart';
-import 'car_detail_screen.dart';
+import '../car/car_detail_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
