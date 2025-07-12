@@ -1,13 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'core/constants/color_scheme.dart';
 import 'view/splash/splash_screen.dart';
-
-class App extends StatelessWidget {
+import 'view/auth/reset_password_screen.dart';
+class App extends StatefulWidget {
   const App({super.key});
+
+  @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  final _navigatorKey = GlobalKey<NavigatorState>();
+
+  @override
+  void initState() {
+    super.initState();
+    Supabase.instance.client.auth.onAuthStateChange.listen((data) {
+      final event = data.event;
+      if (event == AuthChangeEvent.passwordRecovery) {
+        _navigatorKey.currentState?.push(
+          MaterialPageRoute(builder: (_) => const ResetPasswordScreen()),
+        );
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: _navigatorKey,
       title: 'Exotic Cars',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
