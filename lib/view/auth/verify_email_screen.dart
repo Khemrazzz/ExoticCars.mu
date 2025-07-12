@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import '../../core/services/auth_service.dart';
+import '../../core/widgets/primary_button.dart';
+import '../../core/constants/color_scheme.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'login_screen.dart';
 
@@ -45,9 +48,9 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
     setState(() => _checking = true);
 
     try {
-      final response = await Supabase.instance.client.auth.signInWithPassword(
-        email: widget.email,
-        password: widget.password,
+      final response = await AuthService.signInWithEmail(
+        widget.email,
+        widget.password,
       );
 
       final user = response.user;
@@ -94,7 +97,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         title: const Text('Verify Email'),
         backgroundColor: Colors.transparent,
@@ -112,20 +115,11 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 32),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.amber[700],
-                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 14),
-              ),
-              onPressed: _checking ? null : () => _checkVerification(auto: false),
-              child: _checking
-                  ? const SizedBox(
-                width: 20,
-                height: 20,
-                child: CircularProgressIndicator(
-                    color: Colors.black, strokeWidth: 2),
-              )
-                  : const Text('I have verified'),
+            PrimaryButton(
+              text: 'I have verified',
+              loading: _checking,
+              onPressed:
+                  _checking ? null : () => _checkVerification(auto: false),
             ),
             const SizedBox(height: 16),
             TextButton.icon(

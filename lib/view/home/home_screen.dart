@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import '../../core/services/auth_service.dart';
+import '../../core/constants/color_scheme.dart';
 import '../auth/login_screen.dart';
-import 'car_detail_screen.dart';
+import '../car/car_detail_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   void logout(BuildContext context) async {
-    await Supabase.instance.client.auth.signOut();
+    await AuthService.signOut();
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (_) => const LoginScreen()),
@@ -39,10 +41,10 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         title: const Text('Exotic Cars'),
-        backgroundColor: Colors.black,
+        backgroundColor: AppColors.background,
         foregroundColor: Colors.amber,
         actions: [
           IconButton(
@@ -66,7 +68,7 @@ class HomeScreen extends StatelessWidget {
               );
             },
             child: Card(
-              color: Colors.grey[900],
+              color: AppColors.surface,
               margin: const EdgeInsets.symmetric(vertical: 12),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),

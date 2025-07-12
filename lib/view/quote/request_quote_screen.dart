@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import '../../core/widgets/input_field.dart';
+import '../../core/widgets/primary_button.dart';
+import '../../core/utils/validators.dart';
+import '../../core/constants/color_scheme.dart';
 
 class RequestQuoteScreen extends StatefulWidget {
   final String carName;
@@ -18,7 +22,7 @@ class _RequestQuoteScreenState extends State<RequestQuoteScreen> {
       showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          backgroundColor: Colors.grey[900],
+          backgroundColor: AppColors.surface,
           title: const Text(
             'Quote Request Sent',
             style: TextStyle(color: Colors.amber),
@@ -42,10 +46,10 @@ class _RequestQuoteScreenState extends State<RequestQuoteScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         title: const Text('Request Quote'),
-        backgroundColor: Colors.black,
+        backgroundColor: AppColors.background,
         foregroundColor: Colors.amber,
       ),
       body: Padding(
@@ -60,43 +64,16 @@ class _RequestQuoteScreenState extends State<RequestQuoteScreen> {
                 style: const TextStyle(color: Colors.white, fontSize: 18),
               ),
               const SizedBox(height: 24),
-              TextFormField(
+              InputField(
                 controller: _email,
-                style: const TextStyle(color: Colors.white),
+                label: 'Email Address',
                 keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  labelText: 'Email Address',
-                  labelStyle: const TextStyle(color: Colors.white70),
-                  filled: true,
-                  fillColor: Colors.grey[900],
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'Email is required';
-                  }
-                  final emailRegex = RegExp(
-                      r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-                  if (!emailRegex.hasMatch(value.trim())) {
-                    return 'Enter a valid email';
-                  }
-                  return null;
-                },
+                validator: Validators.email,
               ),
               const SizedBox(height: 24),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.amber[700],
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                  ),
-                  onPressed: submitQuote,
-                  child:
-                  const Text('Submit', style: TextStyle(fontSize: 16)),
-                ),
+              PrimaryButton(
+                text: 'Submit',
+                onPressed: submitQuote,
               )
             ],
           ),
