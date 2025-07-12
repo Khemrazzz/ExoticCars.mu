@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import '../../core/services/auth_service.dart';
+import '../../core/widgets/input_field.dart';
+import '../../core/widgets/primary_button.dart';
+import '../../core/utils/validators.dart';
+import '../../core/constants/color_scheme.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
@@ -14,7 +19,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
   Future<void> resetPassword() async {
     try {
-      await Supabase.instance.client.auth.resetPasswordForEmail(
+      await AuthService.resetPassword(
         _emailController.text.trim(),
       );
       ScaffoldMessenger.of(context).showSnackBar(
@@ -30,7 +35,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: const Text('Forgot Password'),
@@ -48,37 +53,18 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 style: TextStyle(color: Colors.white, fontSize: 16),
               ),
               const SizedBox(height: 24),
-              TextFormField(
+              InputField(
                 controller: _emailController,
-                style: const TextStyle(color: Colors.white),
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  labelStyle: const TextStyle(color: Colors.white70),
-                  filled: true,
-                  fillColor: Colors.grey[900],
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                validator: (value) =>
-                value == null || value.trim().isEmpty
-                    ? 'Email is required'
-                    : null,
+                label: 'Email',
+                keyboardType: TextInputType.emailAddress,
+                validator: Validators.email,
               ),
               const SizedBox(height: 24),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.amber[700],
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                  ),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) resetPassword();
-                  },
-                  child: const Text('Reset Password',
-                      style: TextStyle(fontSize: 16)),
-                ),
+              PrimaryButton(
+                text: 'Reset Password',
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) resetPassword();
+                },
               ),
             ],
           ),
