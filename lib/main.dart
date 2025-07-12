@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'config/supabase_config.dart';
+import 'core/constants/color_scheme.dart';
 import 'view/auth/auth_gate.dart';
 import 'view/splash/splash_screen.dart'; // 👈 Make sure you created this
 
@@ -21,28 +22,28 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         brightness: Brightness.dark,
-        scaffoldBackgroundColor: Colors.black,
+        scaffoldBackgroundColor: AppColors.background,
         appBarTheme: const AppBarTheme(
           backgroundColor: Colors.transparent,
           elevation: 0,
           titleTextStyle: TextStyle(
-            color: Colors.amber,
+            color: AppColors.primary,
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
-          iconTheme: IconThemeData(color: Colors.amber),
+          iconTheme: IconThemeData(color: AppColors.primary),
         ),
         inputDecorationTheme: InputDecorationTheme(
-          labelStyle: const TextStyle(color: Colors.white70),
+          labelStyle: const TextStyle(color: AppColors.textSecondary),
           filled: true,
-          fillColor: Colors.grey[900],
+          fillColor: AppColors.surface,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
           ),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.amber[700],
+            backgroundColor: AppColors.primaryDark,
             foregroundColor: Colors.black,
             textStyle: const TextStyle(fontSize: 16),
             padding: const EdgeInsets.symmetric(vertical: 14),
@@ -53,16 +54,16 @@ class MyApp extends StatelessWidget {
         ),
         textButtonTheme: TextButtonThemeData(
           style: TextButton.styleFrom(
-            foregroundColor: Colors.amber,
+            foregroundColor: AppColors.primary,
           ),
         ),
         switchTheme: SwitchThemeData(
-          thumbColor: MaterialStateProperty.all(Colors.amber),
-          trackColor: MaterialStateProperty.all(Colors.amber[200]),
+          thumbColor: MaterialStateProperty.all(AppColors.primary),
+          trackColor: MaterialStateProperty.all(AppColors.primary.withOpacity(0.5)),
         ),
         textTheme: const TextTheme(
-          bodyLarge: TextStyle(color: Colors.white),
-          bodyMedium: TextStyle(color: Colors.white),
+          bodyLarge: TextStyle(color: AppColors.textPrimary),
+          bodyMedium: TextStyle(color: AppColors.textPrimary),
         ),
         useMaterial3: true,
       ),

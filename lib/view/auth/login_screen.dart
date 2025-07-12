@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import '../../core/services/auth_service.dart';
+import '../../core/widgets/input_field.dart';
+import '../../core/widgets/primary_button.dart';
+import '../../core/utils/validators.dart';
+import '../../core/constants/color_scheme.dart';
 import '../home/home_screen.dart';
 import 'register_screen.dart';
 import 'forgot_password_screen.dart';
@@ -21,14 +26,14 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> login() async {
     try {
       final response = _isEmailLogin
-          ? await Supabase.instance.client.auth.signInWithPassword(
-        email: _contact.text.trim(),
-        password: _password.text.trim(),
-      )
-          : await Supabase.instance.client.auth.signInWithPassword(
-        phone: _contact.text.trim(),
-        password: _password.text.trim(),
-      );
+          ? await AuthService.signInWithEmail(
+              _contact.text.trim(),
+              _password.text.trim(),
+            )
+          : await AuthService.signInWithPhone(
+              _contact.text.trim(),
+              _password.text.trim(),
+            );
 
       if (response.user != null) {
         Navigator.pushReplacement(
@@ -50,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
@@ -80,9 +85,21 @@ class _LoginScreenState extends State<LoginScreen> {
                   onChanged: (val) => setState(() => _isEmailLogin = val),
                 ),
                 const SizedBox(height: 16),
-                _buildInput(_contact, _isEmailLogin ? 'Email' : 'Phone Number'),
+                InputField(
+                  controller: _contact,
+                  label: _isEmailLogin ? 'Email' : 'Phone Number',
+                  keyboardType: _isEmailLogin
+                      ? TextInputType.emailAddress
+                      : TextInputType.phone,
+                  validator: Validators.requiredField,
+                ),
                 const SizedBox(height: 16),
-                _buildInput(_password, 'Password', obscure: true),
+                InputField(
+                  controller: _password,
+                  label: 'Password',
+                  obscure: true,
+                  validator: Validators.requiredField,
+                ),
                 const SizedBox(height: 8),
                 Align(
                   alignment: Alignment.centerRight,
@@ -97,19 +114,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.amber[700],
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                    ),
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) login();
-                    },
-                    child:
-                    const Text('Log In', style: TextStyle(fontSize: 16)),
-                  ),
+                PrimaryButton(
+                  text: 'Log In',
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) login();
+                  },
                 ),
                 const SizedBox(height: 20),
                 Center(
@@ -131,21 +140,5 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildInput(TextEditingController controller, String label,
-      {bool obscure = false}) {
-    return TextFormField(
-      controller: controller,
-      obscureText: obscure,
-      style: const TextStyle(color: Colors.white),
-      decoration: InputDecoration(
-        labelText: label,
-        labelStyle: const TextStyle(color: Colors.white70),
-        filled: true,
-        fillColor: Colors.grey[900],
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-      ),
-      validator: (value) =>
-      value == null || value.trim().isEmpty ? 'Required' : null,
-    );
-  }
+
 }
