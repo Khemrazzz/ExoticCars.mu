@@ -1,4 +1,5 @@
-import 'package:flutter/foundation.dart';
+// `Object.hash` is used for generating a hash code for the class properties.
+// No additional Flutter imports are required here.
 
 class UserProfile {
   final String id;
@@ -62,6 +63,14 @@ class UserProfile {
   }
 
   @override
-  int get hashCode => hashValues(id, firstName, lastName, email, phone, nic,
-      isMauritianResident, createdAt);
+  int get hashCode => Object.hash(
+        id,
+        firstName,
+        lastName,
+        email,
+        phone,
+        nic,
+        isMauritianResident,
+        createdAt,
+      );
 }
