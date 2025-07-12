@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import '../../core/services/auth_service.dart';
+import '../../core/widgets/input_field.dart';
+import '../../core/widgets/primary_button.dart';
+import '../../core/utils/validators.dart';
+import '../../core/constants/color_scheme.dart';
 import '../../../config/supabase_config.dart';
 import 'login_screen.dart';
 import 'verify_email_screen.dart';
@@ -28,14 +33,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     try {
       if (_isEmailMode) {
-        await client.auth.signUp(
-          email: _email.text.trim(),
-          password: _password.text.trim(),
+        await AuthService.signUpWithEmail(
+          _email.text.trim(),
+          _password.text.trim(),
         );
       } else {
-        await client.auth.signUp(
-          phone: _phone.text.trim(),
-          password: _password.text.trim(),
+        await AuthService.signUpWithPhone(
+          _phone.text.trim(),
+          _password.text.trim(),
         );
       }
 
@@ -66,7 +71,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
@@ -95,18 +100,43 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 const SizedBox(height: 16),
                 _isEmailMode
-                    ? _buildInput(_email, 'Email',
-                    keyboardType: TextInputType.emailAddress)
-                    : _buildInput(_phone, 'Phone Number (+230...)',
-                    keyboardType: TextInputType.phone),
+                    ? InputField(
+                        controller: _email,
+                        label: 'Email',
+                        keyboardType: TextInputType.emailAddress,
+                        validator: Validators.requiredField,
+                      )
+                    : InputField(
+                        controller: _phone,
+                        label: 'Phone Number (+230...)',
+                        keyboardType: TextInputType.phone,
+                        validator: Validators.requiredField,
+                      ),
                 const SizedBox(height: 16),
-                _buildInput(_password, 'Password', obscure: true),
+                InputField(
+                  controller: _password,
+                  label: 'Password',
+                  obscure: true,
+                  validator: Validators.requiredField,
+                ),
                 const SizedBox(height: 16),
-                _buildInput(_firstName, 'First Name'),
+                InputField(
+                  controller: _firstName,
+                  label: 'First Name',
+                  validator: Validators.requiredField,
+                ),
                 const SizedBox(height: 16),
-                _buildInput(_lastName, 'Last Name'),
+                InputField(
+                  controller: _lastName,
+                  label: 'Last Name',
+                  validator: Validators.requiredField,
+                ),
                 const SizedBox(height: 16),
-                _buildInput(_nic, 'NIC'),
+                InputField(
+                  controller: _nic,
+                  label: 'NIC',
+                  validator: Validators.requiredField,
+                ),
                 const SizedBox(height: 16),
                 SwitchListTile(
                   title: const Text('Are you currently in Mauritius?',
@@ -116,18 +146,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       setState(() => _isMauritianResident = val),
                 ),
                 const SizedBox(height: 24),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.amber[700],
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                    ),
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) registerUser();
-                    },
-                    child: const Text('Sign Up', style: TextStyle(fontSize: 16)),
-                  ),
+                PrimaryButton(
+                  text: 'Sign Up',
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) registerUser();
+                  },
                 ),
                 const SizedBox(height: 20),
                 Center(
@@ -150,24 +173,5 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  Widget _buildInput(TextEditingController controller, String label,
-      {bool obscure = false, TextInputType keyboardType = TextInputType.text}) {
-    return TextFormField(
-      controller: controller,
-      obscureText: obscure,
-      keyboardType: keyboardType,
-      style: const TextStyle(color: Colors.white),
-      decoration: InputDecoration(
-        labelText: label,
-        labelStyle: const TextStyle(color: Colors.white70),
-        filled: true,
-        fillColor: Colors.grey[900],
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-      ),
-      validator: (value) =>
-      value == null || value.trim().isEmpty ? 'Required' : null,
-    );
-  }
+
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'request_quote_screen.dart';
+import '../quote/request_quote_screen.dart';
+import '../../core/widgets/primary_button.dart';
+import '../../core/constants/color_scheme.dart';
 
 class CarDetailScreen extends StatelessWidget {
   final Map<String, dynamic> car;
@@ -9,10 +11,10 @@ class CarDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         title: Text('${car['brand']} ${car['model']}'),
-        backgroundColor: Colors.black,
+        backgroundColor: AppColors.background,
         foregroundColor: Colors.amber,
       ),
       body: ListView(
@@ -68,25 +70,18 @@ class CarDetailScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 24),
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.amber[700],
-                padding: const EdgeInsets.symmetric(vertical: 16),
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => RequestQuoteScreen(
-                      carName: '${car['brand']} ${car['model']}',
-                    ),
+          PrimaryButton(
+            text: 'Request Quote',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => RequestQuoteScreen(
+                    carName: '${car['brand']} ${car['model']}',
                   ),
-                );
-              },
-              child: const Text('Request Quote', style: TextStyle(fontSize: 16)),
-            ),
+                ),
+              );
+            },
           ),
         ],
       ),
