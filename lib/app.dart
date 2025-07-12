@@ -57,7 +57,7 @@ class App extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: const SplashScreen(), // 👈 This will be the first screen shown
+      home: const SplashScreen(),
     );
   }
 }
