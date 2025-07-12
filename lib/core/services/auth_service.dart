@@ -23,6 +23,10 @@ class AuthService {
     return _client.auth.resetPasswordForEmail(email);
   }
 
+  static Future<void> updatePassword(String password) {
+    return _client.auth.updateUser(UserAttributes(password: password));
+  }
+
   static Future<void> signOut() {
     return _client.auth.signOut();
   }
