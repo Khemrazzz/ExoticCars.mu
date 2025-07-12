@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'config/env.dart';
 import 'config/supabase_config.dart';
 import 'core/constants/color_scheme.dart';
 import 'view/auth/auth_gate.dart';
@@ -7,7 +7,7 @@ import 'view/splash/splash_screen.dart'; // 👈 Make sure you created this
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load(); // Loads .env
+  await Env.load(); // Loads .env
   await SupabaseConfig.initialize(); // Initializes Supabase
   runApp(const MyApp());
 }
