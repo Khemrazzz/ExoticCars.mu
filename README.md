@@ -17,13 +17,15 @@ samples, guidance on mobile development, and a full API reference.
 
 ## Environment variables
 
-Create an `assets/.env` file and set the following variables:
+Copy `assets/.env.example` to `assets/.env` and set the following variables:
 
 ```
 SUPABASE_URL=<your supabase project url>
 SUPABASE_ANON_KEY=<your supabase anon key>
 AUTH_REDIRECT_URL=<your desired redirect url>
 ```
+
+The example file is version controlled while your local `assets/.env` is ignored by Git.
 
 `AUTH_REDIRECT_URL` specifies the callback used when Supabase needs to
 redirect back to the app during authentication flows (for example password
