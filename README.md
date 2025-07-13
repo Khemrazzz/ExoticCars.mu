@@ -40,3 +40,11 @@ When the app is opened via a link that includes `#/reset-password` in the URL
 fragment, it automatically navigates to the reset password screen after the
 first frame. This ensures Supabase password recovery links open directly in the
 app.
+
+## OTP password recovery
+
+The password reset flow relies on a one-time password (OTP). After entering an
+email, the app sends an OTP which must be typed into the verification screen.
+Upon successful verification the user is navigated to the password update form.
+Update the Supabase reset email template to include `{{ .Token }}` so the OTP is
+present in the email.

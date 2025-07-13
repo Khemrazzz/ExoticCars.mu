@@ -13,6 +13,7 @@ import 'view/quote/request_quote_screen.dart';
 import 'view/auth/auth_gate.dart';
 import 'view/auth/forgot_password_screen.dart';
 import 'view/auth/verify_email_screen.dart';
+import 'view/auth/verify_reset_otp_screen.dart';
 class App extends StatefulWidget {
   final AuthState? initialAuthState;
   const App({super.key, this.initialAuthState});
@@ -46,6 +47,11 @@ class _AppState extends State<App> {
           },
         ),
         GoRoute(path: '/forgot', builder: (_, __) => const ForgotPasswordScreen()),
+        GoRoute(
+          path: '/verify-reset',
+          builder: (context, state) =>
+              VerifyResetOtpScreen(email: state.extra as String),
+        ),
         GoRoute(
           path: '/car/:id',
           builder: (context, state) {
