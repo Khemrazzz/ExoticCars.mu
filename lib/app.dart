@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'config/supabase_config.dart';
 import 'core/constants/color_scheme.dart';
 import 'view/splash/splash_screen.dart';
 import 'view/auth/reset_password_screen.dart';
