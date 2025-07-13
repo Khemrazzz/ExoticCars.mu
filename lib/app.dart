@@ -66,7 +66,12 @@ class _AppState extends State<App> {
       ],
     );
 
-    if (widget.initialAuthState?.event == AuthChangeEvent.passwordRecovery) {
+    // Handle deep links that include a `#/reset-password` fragment.
+    if (Uri.base.fragment.contains('/reset-password')) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _router.go('/reset-password');
+      });
+    } else if (widget.initialAuthState?.event == AuthChangeEvent.passwordRecovery) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _router.go('/reset-password');
       });

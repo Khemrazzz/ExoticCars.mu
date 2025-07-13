@@ -28,3 +28,10 @@ AUTH_REDIRECT_URL=<your desired redirect url>
 `AUTH_REDIRECT_URL` specifies the callback used when Supabase needs to
 redirect back to the app during authentication flows (for example password
 resets). The value should match a deep link your application can handle.
+
+## Password reset deep links
+
+When the app is opened via a link that includes `#/reset-password` in the URL
+fragment, it automatically navigates to the reset password screen after the
+first frame. This ensures Supabase password recovery links open directly in the
+app.
