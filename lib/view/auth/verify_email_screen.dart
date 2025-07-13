@@ -52,6 +52,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
         widget.email,
         widget.password,
       );
+      if (!mounted) return;
 
       final user = response.user;
 
@@ -85,6 +86,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
     if (await canLaunchUrl(Uri.parse(url))) {
       await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
     } else {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Could not open Gmail.')),
       );

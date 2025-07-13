@@ -43,6 +43,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           _password.text.trim(),
         );
       }
+      if (!mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

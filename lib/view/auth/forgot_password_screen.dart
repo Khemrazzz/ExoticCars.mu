@@ -22,6 +22,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       await AuthService.resetPassword(
         _emailController.text.trim(),
       );
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Password reset email has been sent.')),
       );
