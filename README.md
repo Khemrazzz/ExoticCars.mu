@@ -22,7 +22,8 @@ Copy `assets/.env.example` to `assets/.env` and set the following variables:
 ```
 SUPABASE_URL=<your supabase project url>
 SUPABASE_ANON_KEY=<your supabase anon key>
-AUTH_REDIRECT_URL=<your desired redirect url>
+# Include `#/reset-password` so password recovery emails open in the app
+AUTH_REDIRECT_URL=exoticcars://login-callback/#/reset-password
 ```
 
 The example file is version controlled while your local `assets/.env` is ignored by Git.
@@ -30,6 +31,8 @@ The example file is version controlled while your local `assets/.env` is ignored
 `AUTH_REDIRECT_URL` specifies the callback used when Supabase needs to
 redirect back to the app during authentication flows (for example password
 resets). The value should match a deep link your application can handle.
+For password recovery to work correctly, ensure the URL ends with
+`#/reset-password`.
 
 ## Password reset deep links
 
