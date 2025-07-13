@@ -19,8 +19,9 @@ class _AppState extends State<App> {
     Supabase.instance.client.auth.onAuthStateChange.listen((data) {
       final event = data.event;
       if (event == AuthChangeEvent.passwordRecovery) {
-        _navigatorKey.currentState?.push(
+        _navigatorKey.currentState?.pushAndRemoveUntil(
           MaterialPageRoute(builder: (_) => const ResetPasswordScreen()),
+          (route) => false,
         );
       }
     });
