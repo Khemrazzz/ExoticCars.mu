@@ -33,6 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
               _contact.text.trim(),
               _password.text.trim(),
             );
+      if (!mounted) return;
 
       if (response.user != null) {
         context.go('/home');
