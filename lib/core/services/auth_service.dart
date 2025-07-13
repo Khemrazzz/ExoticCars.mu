@@ -1,5 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:exotic_cars_apk/core/constants.dart';
+import '../constants.dart';
 
 class AuthService {
   static SupabaseClient get _client => Supabase.instance.client;
