@@ -8,7 +8,10 @@ class SupabaseConfig {
     await Supabase.initialize(
       url: dotenv.env['SUPABASE_URL']!,
       anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
-      authOptions: AuthOptions(redirectUrl: kAuthRedirectUrl),
+      authOptions: FlutterAuthClientOptions(
+        authFlowType: AuthFlowType.pkce,
+        redirectUrl: kAuthRedirectUrl,
+      ),
     );
   }
 
