@@ -8,14 +8,13 @@ class SupabaseConfig {
   static Future<void> initialize({
     void Function(AuthState data)? onAuthStateChange,
   }) async {
-    await Supabase.initialize(
-      url: dotenv.env['SUPABASE_URL']!,
-      anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
-      authCallbackUrlHostname: 'login-callback',
-      authOptions: const FlutterAuthClientOptions(
-        authFlowType: AuthFlowType.pkce,
-      ),
-    );
+      await Supabase.initialize(
+        url: dotenv.env['SUPABASE_URL']!,
+        anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
+        authOptions: const FlutterAuthClientOptions(
+          authFlowType: AuthFlowType.pkce,
+        ),
+      );
 
     if (onAuthStateChange != null) {
       _authSubscription?.cancel();
