@@ -1,5 +1,5 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
-import '../constants.dart';
+import '../../config/env.dart';
 
 class AuthService {
   static SupabaseClient get _client => Supabase.instance.client;
@@ -23,7 +23,7 @@ class AuthService {
   static Future<void> resetPassword(String email) {
     return _client.auth.resetPasswordForEmail(
       email,
-      redirectTo: kAuthRedirectUrl,
+      redirectTo: Env.authRedirectUrl,
     );
   }
 
