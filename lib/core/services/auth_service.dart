@@ -31,6 +31,15 @@ class AuthService {
     return _client.auth.updateUser(UserAttributes(password: password));
   }
 
+  static Future<void> sendResetOtp(String email) {
+    return _client.auth.resetPasswordForEmail(email);
+  }
+
+  static Future<AuthResponse> verifyResetOtp(String email, String token) {
+    return _client.auth
+        .verifyOTP(email: email, token: token, type: OtpType.recovery);
+  }
+
   static Future<void> signOut() {
     return _client.auth.signOut();
   }
