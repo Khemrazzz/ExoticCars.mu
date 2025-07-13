@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/services/auth_service.dart';
 import '../../core/constants/color_scheme.dart';
-import '../auth/login_screen.dart';
-import '../car/car_detail_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   void logout(BuildContext context) async {
     await AuthService.signOut();
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (_) => const LoginScreen()),
-    );
+    context.go('/login');
   }
 
   final List<Map<String, dynamic>> cars = const [
@@ -58,15 +54,10 @@ class HomeScreen extends StatelessWidget {
         itemCount: cars.length,
         itemBuilder: (context, index) {
           final car = cars[index];
-          return GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => CarDetailScreen(car: car),
-                ),
-              );
-            },
+            return GestureDetector(
+              onTap: () {
+                context.push('/car/$index', extra: car);
+              },
             child: Card(
               color: AppColors.surface,
               margin: const EdgeInsets.symmetric(vertical: 12),

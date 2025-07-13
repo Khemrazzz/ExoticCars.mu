@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/services/auth_service.dart';
 import '../../core/widgets/input_field.dart';
 import '../../core/widgets/primary_button.dart';
 import '../../core/utils/validators.dart';
 import '../../core/constants/color_scheme.dart';
-import '../home/home_screen.dart';
-import 'register_screen.dart';
 import 'forgot_password_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -36,10 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
             );
 
       if (response.user != null) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const HomeScreen()),
-        );
+        context.go('/home');
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Login failed')),
@@ -104,11 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(
-                    onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) => const ForgotPasswordScreen()),
-                    ),
+                    onPressed: () => context.push('/forgot'),
                     child: const Text('Forgot Password?',
                         style: TextStyle(color: Colors.amber)),
                   ),
@@ -123,11 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 20),
                 Center(
                   child: TextButton(
-                    onPressed: () => Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) => const RegisterScreen()),
-                    ),
+                    onPressed: () => context.go('/register'),
                     child: const Text("Don't have an account? Sign Up",
                         style: TextStyle(color: Colors.amber)),
                   ),

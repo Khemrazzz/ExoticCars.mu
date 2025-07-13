@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/services/auth_service.dart';
 import '../../core/widgets/primary_button.dart';
 import '../../core/constants/color_scheme.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'login_screen.dart';
 
 class VerifyEmailScreen extends StatefulWidget {
   final String email;
@@ -63,10 +63,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
         }
 
         _timer?.cancel();
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const LoginScreen()),
-        );
+        context.go('/login');
       } else if (!auto) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Email not verified yet.')),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../quote/request_quote_screen.dart';
 import '../../core/widgets/primary_button.dart';
 import '../../core/constants/color_scheme.dart';
@@ -73,14 +74,8 @@ class CarDetailScreen extends StatelessWidget {
           PrimaryButton(
             text: 'Request Quote',
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => RequestQuoteScreen(
-                    carName: '${car['brand']} ${car['model']}',
-                  ),
-                ),
-              );
+              context.push('/quote',
+                  extra: '${car['brand']} ${car['model']}');
             },
           ),
         ],
