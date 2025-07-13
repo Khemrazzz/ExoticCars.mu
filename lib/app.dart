@@ -4,7 +4,8 @@ import 'core/constants/color_scheme.dart';
 import 'view/splash/splash_screen.dart';
 import 'view/auth/reset_password_screen.dart';
 class App extends StatefulWidget {
-  const App({super.key});
+  final AuthState? initialAuthState;
+  const App({super.key, this.initialAuthState});
 
   @override
   State<App> createState() => _AppState();
@@ -16,7 +17,17 @@ class _AppState extends State<App> {
   @override
   void initState() {
     super.initState();
-    Supabase.instance.client.auth.onAuthStateChange.listen((data) {
+
+    if (widget.initialAuthState?.event == AuthChangeEvent.passwordRecovery) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _navigatorKey.currentState?.pushAndRemoveUntil(
+          MaterialPageRoute(builder: (_) => const ResetPasswordScreen()),
+          (route) => false,
+        );
+      });
+    }
+
+    SupabaseConfig.registerAuthListener((data) {
       final event = data.event;
       if (event == AuthChangeEvent.passwordRecovery) {
         _navigatorKey.currentState?.pushAndRemoveUntil(
