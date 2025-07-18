@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../core/constants/color_scheme.dart';
 import 'car_detail_screen.dart';
 
@@ -42,12 +43,7 @@ class CarListScreen extends StatelessWidget {
           final car = cars[index];
           return GestureDetector(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => CarDetailScreen(car: car),
-                ),
-              );
+              context.push('/car/$index', extra: car);
             },
             child: Card(
               color: AppColors.surface,

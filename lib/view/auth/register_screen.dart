@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/services/auth_service.dart';
 import '../../core/widgets/input_field.dart';
@@ -6,7 +7,6 @@ import '../../core/widgets/primary_button.dart';
 import '../../core/utils/validators.dart';
 import '../../core/constants/color_scheme.dart';
 import '../../../config/supabase_config.dart';
-import 'login_screen.dart';
 import 'verify_email_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -43,6 +43,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           _password.text.trim(),
         );
       }
+      if (!mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -52,14 +53,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
       );
 
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (_) => VerifyEmailScreen(
-            email: _email.text.trim(),
-            password: _password.text.trim(),
-          ),
-        ),
+      context.go(
+        '/verify',
+        extra: {
+          'email': _email.text.trim(),
+          'password': _password.text.trim(),
+        },
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -153,18 +152,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   },
                 ),
                 const SizedBox(height: 20),
-                Center(
-                  child: TextButton(
-                    onPressed: () => Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (_) => const LoginScreen()),
+                  Center(
+                    child: TextButton(
+                      onPressed: () => context.go('/login'),
+                      child: const Text(
+                        'Already have an account? Log In',
+                        style: TextStyle(color: Colors.amber),
+                      ),
                     ),
-                    child: const Text(
-                      'Already have an account? Log In',
-                      style: TextStyle(color: Colors.amber),
-                    ),
-                  ),
-                )
+                  )
               ],
             ),
           ),

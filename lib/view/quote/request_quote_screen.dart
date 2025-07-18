@@ -3,6 +3,7 @@ import '../../core/widgets/input_field.dart';
 import '../../core/widgets/primary_button.dart';
 import '../../core/utils/validators.dart';
 import '../../core/constants/color_scheme.dart';
+import '../../core/services/quote_service.dart';
 
 class RequestQuoteScreen extends StatefulWidget {
   final String carName;
@@ -17,8 +18,13 @@ class _RequestQuoteScreenState extends State<RequestQuoteScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _email = TextEditingController();
 
-  void submitQuote() {
+  Future<void> submitQuote() async {
     if (_formKey.currentState!.validate()) {
+      await QuoteService.requestQuote(
+        _email.text.trim(),
+        widget.carName,
+      );
+
       showDialog(
         context: context,
         builder: (_) => AlertDialog(

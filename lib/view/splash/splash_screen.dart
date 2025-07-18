@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
+import 'package:go_router/go_router.dart';
 import '../auth/auth_gate.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -12,6 +14,7 @@ class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
+  Timer? _timer;
 
   @override
   void initState() {
@@ -24,16 +27,16 @@ class _SplashScreenState extends State<SplashScreen>
 
     _controller.forward();
 
-    Future.delayed(const Duration(seconds: 2), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const AuthGate()),
-      );
+    _timer = Timer(const Duration(seconds: 2), () {
+      if (mounted) {
+        context.go('/auth');
+      }
     });
   }
 
   @override
   void dispose() {
+    _timer?.cancel();
     _controller.dispose();
     super.dispose();
   }

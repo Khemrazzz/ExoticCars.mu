@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:go_router/go_router.dart';
 import '../../core/services/auth_service.dart';
 import '../../core/widgets/input_field.dart';
 import '../../core/widgets/primary_button.dart';
@@ -19,12 +19,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
   Future<void> resetPassword() async {
     try {
-      await AuthService.resetPassword(
+      await AuthService.sendResetOtp(
         _emailController.text.trim(),
       );
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Password reset email has been sent.')),
-      );
+      if (!mounted) return;
+      context.go('/verify-reset', extra: _emailController.text.trim());
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error: ${e.toString()}')),
