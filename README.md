@@ -24,6 +24,7 @@ SUPABASE_URL=<your supabase project url>
 SUPABASE_ANON_KEY=<your supabase anon key>
 # Include `#/reset-password` so password recovery emails open in the app
 AUTH_REDIRECT_URL=exoticcars://login-callback/#/reset-password
+QUOTE_FUNCTION_URL=<edge function url>
 ```
 
 The example file is version controlled while your local `assets/.env` is ignored by Git.
@@ -48,3 +49,10 @@ email, the app sends an OTP which must be typed into the verification screen.
 Upon successful verification the user is navigated to the password update form.
 Update the Supabase reset email template to include `{{ .Token }}` so the OTP is
 present in the email.
+
+## Quote request endpoint
+
+Quote requests are sent to a Supabase Edge Function named `send_quote`. Deploy
+this function and copy its public URL into `assets/.env` using the
+`QUOTE_FUNCTION_URL` variable. The app's `QuoteService` invokes this endpoint
+whenever a user submits a quote request.
