@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../home/home_screen.dart';
+import '../admin/admin_dashboard_screen.dart';
 import 'login_screen.dart';
 
 class AuthGate extends StatelessWidget {
@@ -16,7 +17,8 @@ class AuthGate extends StatelessWidget {
         session.user?.phone != null)) {
       return const Center(child: Text('Please verify your account.'));
     } else {
-      return const HomeScreen(); // Already logged in + verified
+      final isAdmin = session.user?.userMetadata?['is_admin'] == true;
+      return isAdmin ? const AdminDashboardScreen() : const HomeScreen();
     }
   }
 }
