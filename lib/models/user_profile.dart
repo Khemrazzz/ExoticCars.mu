@@ -30,7 +30,9 @@ class UserProfile {
       email: map['email'] as String?,
       phone: map['phone'] as String?,
       nic: map['nic'] as String,
-      isMauritianResident: map['is_mauritian_resident'] as bool? ?? false,
+      isMauritianResident:
+          (map['residence_check'] ?? map['is_mauritian_resident']) as bool? ??
+              false,
       createdAt: DateTime.parse(map['created_at'] as String),
     );
   }
@@ -43,7 +45,7 @@ class UserProfile {
       'email': email,
       'phone': phone,
       'nic': nic,
-      'is_mauritian_resident': isMauritianResident,
+      'residence_check': isMauritianResident,
       'created_at': createdAt.toIso8601String(),
     };
   }
