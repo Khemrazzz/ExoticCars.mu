@@ -49,16 +49,28 @@ class HomeScreen extends StatelessWidget {
           )
         ],
       ),
-      body: ListView.builder(
-        padding: const EdgeInsets.all(16),
-        itemCount: cars.length,
-        itemBuilder: (context, index) {
-          final car = cars[index];
-            return GestureDetector(
-              onTap: () {
-                context.push('/car/$index', extra: car);
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: ElevatedButton(
+              onPressed: () {
+                context.push('/admin-cars');
               },
-            child: Card(
+              child: const Text('Manage Cars'),
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              padding: const EdgeInsets.all(16),
+              itemCount: cars.length,
+              itemBuilder: (context, index) {
+                final car = cars[index];
+                return GestureDetector(
+                  onTap: () {
+                    context.push('/car/$index', extra: car);
+                  },
+                child: Card(
               color: AppColors.surface,
               margin: const EdgeInsets.symmetric(vertical: 12),
               shape: RoundedRectangleBorder(
