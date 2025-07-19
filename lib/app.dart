@@ -73,7 +73,18 @@ class _AppState extends State<App> {
         ),
         GoRoute(
           path: '/admin-cars',
-          builder: (_, __) => const AdminCarListScreen(),
+          builder: (context, __) {
+            final isAdmin = Supabase.instance.client.auth.currentUser
+                    ?.userMetadata?['is_admin'] ==
+                true;
+            if (!isAdmin) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                context.go('/home');
+              });
+              return const SizedBox.shrink();
+            }
+            return const AdminCarListScreen();
+          },
         ),
         GoRoute(
           path: '/reset-password',
