@@ -56,3 +56,15 @@ Quote requests are sent to a Supabase Edge Function named `send_quote`. Deploy
 this function and copy its public URL into `assets/.env` using the
 `QUOTE_FUNCTION_URL` variable. The app's `QuoteService` invokes this endpoint
 whenever a user submits a quote request.
+
+### Deploying with Supabase CLI
+
+To deploy the function run the following commands:
+
+```bash
+cd supabase
+supabase functions deploy send_quote
+```
+
+After deployment, copy the URL printed by the CLI into `assets/.env` as
+`QUOTE_FUNCTION_URL`.
