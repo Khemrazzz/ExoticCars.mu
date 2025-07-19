@@ -104,6 +104,10 @@ class HomeScreen extends StatelessWidget {
           );
         },
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => context.push('/add-car'),
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }

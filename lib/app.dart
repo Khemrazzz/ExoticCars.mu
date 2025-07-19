@@ -14,6 +14,7 @@ import 'view/auth/auth_gate.dart';
 import 'view/auth/forgot_password_screen.dart';
 import 'view/auth/verify_email_screen.dart';
 import 'view/auth/verify_reset_otp_screen.dart';
+import 'view/car/add_car_screen.dart';
 class App extends StatefulWidget {
   final AuthState? initialAuthState;
   const App({super.key, this.initialAuthState});
@@ -65,6 +66,7 @@ class _AppState extends State<App> {
             return RequestQuoteScreen(carName: name);
           },
         ),
+        GoRoute(path: '/add-car', builder: (_, __) => const AddCarScreen()),
         GoRoute(
           path: '/reset-password',
           builder: (_, __) => const ResetPasswordScreen(),
