@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import '../admin/admin_dashboard_screen.dart';
+import '../home/home_screen.dart';
 import '../../core/services/auth_service.dart';
 import '../../core/widgets/input_field.dart';
 import '../../core/widgets/primary_button.dart';
@@ -22,6 +24,36 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _contact = TextEditingController();
   final TextEditingController _password = TextEditingController();
 
+  Future<void> checkIfAdminAndNavigate() async {
+    final supabase = Supabase.instance.client;
+    final user = supabase.auth.currentUser;
+    final userId = user?.id;
+
+    if (userId == null) return;
+
+    final response = await supabase
+        .from('profiles')
+        .select('is_admin')
+        .eq('id', userId)
+        .single();
+
+    final isAdmin = response['is_admin'] == true;
+
+    if (!mounted) return;
+
+    if (isAdmin) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const AdminDashboardScreen()),
+      );
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const HomeScreen()),
+      );
+    }
+  }
+
   Future<void> login() async {
     try {
       final response = _isEmailLogin
@@ -36,9 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (!mounted) return;
 
       if (response.user != null) {
-        final user = Supabase.instance.client.auth.currentUser;
-        final isAdmin = user?.userMetadata?['is_admin'] == true;
-        context.go(isAdmin ? '/admin' : '/home');
+        await checkIfAdminAndNavigate();
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Login failed')),
