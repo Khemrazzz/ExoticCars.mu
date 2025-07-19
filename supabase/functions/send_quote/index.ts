@@ -4,12 +4,29 @@ import { SmtpClient } from "https://deno.land/x/smtp/mod.ts";
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
 serve(async (req) => {
+  if (req.method === "OPTIONS") {
+    return new Response("ok", {
+      status: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization, apikey",
+      },
+    });
+  }
+
   const { email, car_name } = await req.json().catch(() => ({ }));
 
   if (!email || !car_name) {
     return new Response(
       JSON.stringify({ error: "Invalid request" }),
-      { status: 400, headers: { "Content-Type": "application/json" } },
+      {
+        status: 400,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
+        },
+      },
     );
   }
 
@@ -51,6 +68,12 @@ serve(async (req) => {
 
   return new Response(
     JSON.stringify({ message: "Quote request submitted" }),
-    { headers: { "Content-Type": "application/json" } },
+    {
+      status: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+      },
+    },
   );
 });
