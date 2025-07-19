@@ -10,12 +10,12 @@ serve(async (req) => {
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "POST, OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization, apikey",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization, apikey, x-client-info",
       },
     });
   }
 
-  const { email, car_name } = await req.json().catch(() => ({ }));
+  const { email, car_name } = await req.json().catch(() => ({}));
 
   if (!email || !car_name) {
     return new Response(
@@ -26,25 +26,32 @@ serve(async (req) => {
           "Access-Control-Allow-Origin": "*",
           "Content-Type": "application/json",
         },
-      },
+      }
     );
   }
 
   const supabase = createClient(
     Deno.env.get("SUPABASE_URL")!,
-    Deno.env.get("SUPABASE_ANON_KEY")!,
+    Deno.env.get("SUPABASE_ANON_KEY")!
   );
 
-  await supabase.from("quote_requests").insert({ email, car_name });
+  const { error: dbError } = await supabase
+    .from("quote_requests")
+    .insert({ email, car_name });
+
+  if (dbError) {
+    console.error("DB Insert Error:", dbError.message);
+  }
 
   const gmailUser = Deno.env.get("GMAIL_USERNAME");
   const gmailPass = Deno.env.get("GMAIL_APP_PASSWORD");
 
   if (gmailUser && gmailPass) {
     const subject = `Quote request for ${car_name}`;
-    const body =
-      `Thanks for requesting a quote for the ${car_name}. We'll reach out soon.`;
+    const body = `Thanks for requesting a quote for the ${car_name}. We'll reach out soon.`;
+
     const client = new SmtpClient();
+
     try {
       await client.connectTLS({
         hostname: "smtp.gmail.com",
@@ -62,7 +69,7 @@ serve(async (req) => {
 
       await client.close();
     } catch (err) {
-      console.error("Failed to send confirmation email", err);
+      console.error("Failed to send confirmation email:", err);
     }
   }
 
@@ -74,6 +81,6 @@ serve(async (req) => {
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
       },
-    },
+    }
   );
 });
