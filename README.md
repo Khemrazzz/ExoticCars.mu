@@ -28,6 +28,7 @@ QUOTE_FUNCTION_URL=<edge function url>
 ```
 
 The example file is version controlled while your local `assets/.env` is ignored by Git.
+Make sure **not** to commit your personal `assets/.env` file.
 
 `AUTH_REDIRECT_URL` specifies the callback used when Supabase needs to
 redirect back to the app during authentication flows (for example password
