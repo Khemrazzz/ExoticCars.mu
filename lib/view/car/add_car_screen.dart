@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import '../../core/services/storage_service.dart';
 
 class AddCarScreen extends StatefulWidget {
   const AddCarScreen({super.key});
@@ -30,18 +31,8 @@ class _AddCarScreenState extends State<AddCarScreen> {
     }
   }
 
-  Future<String?> uploadImage(File file) async {
-    final supabase = Supabase.instance.client;
-    final fileName = 'car_${DateTime.now().millisecondsSinceEpoch}.jpg';
-
-    final storage = supabase.storage.from('car-images');
-
-    final uploaded = await storage.upload(fileName, file);
-
-    if (uploaded.isEmpty) {
-      return storage.getPublicUrl(fileName);
-    }
-    return null;
+  Future<String?> uploadImage(File file) {
+    return StorageService.uploadCarImage(file);
   }
 
   Future<void> submitCar() async {
