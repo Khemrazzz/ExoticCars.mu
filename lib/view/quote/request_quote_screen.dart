@@ -20,32 +20,55 @@ class _RequestQuoteScreenState extends State<RequestQuoteScreen> {
 
   Future<void> submitQuote() async {
     if (_formKey.currentState!.validate()) {
-      await QuoteService.requestQuote(
-        _email.text.trim(),
-        widget.carName,
-      );
+      try {
+        await QuoteService.requestQuote(
+          _email.text.trim(),
+          widget.carName,
+        );
 
-      showDialog(
-        context: context,
-        builder: (_) => AlertDialog(
-          backgroundColor: AppColors.surface,
-          title: const Text(
-            'Quote Request Sent',
-            style: TextStyle(color: Colors.amber),
-          ),
-          content: Text(
-            'Your quote request for ${widget.carName} has been sent.',
-            style: const TextStyle(color: Colors.white),
-          ),
-          actions: [
-            TextButton(
-              child: const Text('OK', style: TextStyle(color: Colors.amber)),
-              onPressed: () => Navigator.pop(context),
+        showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+            backgroundColor: AppColors.surface,
+            title: const Text(
+              'Quote Request Sent',
+              style: TextStyle(color: Colors.amber),
             ),
-          ],
-        ),
-      );
-      _email.clear();
+            content: Text(
+              'Your quote request for ${widget.carName} has been sent.',
+              style: const TextStyle(color: Colors.white),
+            ),
+            actions: [
+              TextButton(
+                child: const Text('OK', style: TextStyle(color: Colors.amber)),
+                onPressed: () => Navigator.pop(context),
+              ),
+            ],
+          ),
+        );
+        _email.clear();
+      } catch (e) {
+        showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+            backgroundColor: AppColors.surface,
+            title: const Text(
+              'Error',
+              style: TextStyle(color: Colors.redAccent),
+            ),
+            content: Text(
+              'Failed to send quote request.',
+              style: const TextStyle(color: Colors.white),
+            ),
+            actions: [
+              TextButton(
+                child: const Text('OK', style: TextStyle(color: Colors.redAccent)),
+                onPressed: () => Navigator.pop(context),
+              ),
+            ],
+          ),
+        );
+      }
     }
   }
 
