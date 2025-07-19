@@ -36,7 +36,9 @@ class _LoginScreenState extends State<LoginScreen> {
       if (!mounted) return;
 
       if (response.user != null) {
-        context.go('/home');
+        final user = Supabase.instance.client.auth.currentUser;
+        final isAdmin = user?.userMetadata?['is_admin'] == true;
+        context.go(isAdmin ? '/admin' : '/home');
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Login failed')),

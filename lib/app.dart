@@ -10,6 +10,7 @@ import 'view/auth/register_screen.dart';
 import 'view/home/home_screen.dart';
 import 'view/car/car_detail_screen.dart';
 import 'view/car/admin_car_list_screen.dart';
+import 'view/admin/admin_dashboard_screen.dart';
 import 'view/quote/request_quote_screen.dart';
 import 'view/auth/auth_gate.dart';
 import 'view/auth/forgot_password_screen.dart';
@@ -65,6 +66,10 @@ class _AppState extends State<App> {
             final name = state.extra as String? ?? '';
             return RequestQuoteScreen(carName: name);
           },
+        ),
+        GoRoute(
+          path: '/admin',
+          builder: (_, __) => const AdminDashboardScreen(),
         ),
         GoRoute(
           path: '/admin-cars',
