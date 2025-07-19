@@ -25,6 +25,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       if (!mounted) return;
       context.go('/verify-reset', extra: _emailController.text.trim());
     } catch (e) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error: ${e.toString()}')),
       );
@@ -56,7 +57,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 controller: _emailController,
                 label: 'Email',
                 keyboardType: TextInputType.emailAddress,
-                validator: Validators.email,
+                validator: Validators.emailValidator,
               ),
               const SizedBox(height: 24),
               PrimaryButton(

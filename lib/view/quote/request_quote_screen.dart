@@ -74,7 +74,7 @@ class _RequestQuoteScreenState extends State<RequestQuoteScreen> {
                 controller: _email,
                 label: 'Email Address',
                 keyboardType: TextInputType.emailAddress,
-                validator: Validators.email,
+                validator: Validators.emailValidator,
               ),
               const SizedBox(height: 24),
               PrimaryButton(

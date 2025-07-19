@@ -103,20 +103,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         controller: _email,
                         label: 'Email',
                         keyboardType: TextInputType.emailAddress,
-                        validator: Validators.requiredField,
+                        validator: Validators.emailValidator,
                       )
                     : InputField(
                         controller: _phone,
                         label: 'Phone Number (+230...)',
                         keyboardType: TextInputType.phone,
-                        validator: Validators.requiredField,
+                        validator: Validators.phoneValidator,
                       ),
                 const SizedBox(height: 16),
                 InputField(
                   controller: _password,
                   label: 'Password',
                   obscure: true,
-                  validator: Validators.requiredField,
+                  validator: Validators.passwordValidator,
                 ),
                 const SizedBox(height: 16),
                 InputField(
@@ -134,7 +134,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 InputField(
                   controller: _nic,
                   label: 'NIC',
-                  validator: Validators.requiredField,
+                  validator: Validators.nicValidator,
                 ),
                 const SizedBox(height: 16),
                 SwitchListTile(
