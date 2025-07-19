@@ -6,8 +6,7 @@ import '../../core/widgets/input_field.dart';
 import '../../core/widgets/primary_button.dart';
 import '../../core/utils/validators.dart';
 import '../../core/constants/color_scheme.dart';
-import '../../models/user_profile.dart';
-import '../../repository/user_repository.dart';
+import '../../../config/supabase_config.dart';
 import 'verify_email_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -30,36 +29,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _isEmailMode = true;
 
   Future<void> registerUser() async {
-    final repo = UserRepository();
+    final client = SupabaseConfig.client;
 
     try {
-      AuthResponse response;
       if (_isEmailMode) {
-        response = await AuthService.signUpWithEmail(
+        await AuthService.signUpWithEmail(
           _email.text.trim(),
           _password.text.trim(),
         );
       } else {
-        response = await AuthService.signUpWithPhone(
+        await AuthService.signUpWithPhone(
           _phone.text.trim(),
           _password.text.trim(),
         );
-      }
-
-      final userId = response.user?.id;
-      if (userId != null) {
-        final profile = UserProfile(
-          id: userId,
-          firstName: _firstName.text.trim(),
-          lastName: _lastName.text.trim(),
-          email: _isEmailMode ? _email.text.trim() : null,
-          phone: _isEmailMode ? null : _phone.text.trim(),
-          nic: _nic.text.trim(),
-          isMauritianResident: _isMauritianResident,
-          createdAt: DateTime.now(),
-        );
-
-        await repo.create(profile);
       }
       if (!mounted) return;
 
