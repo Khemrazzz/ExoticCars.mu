@@ -68,3 +68,8 @@ supabase functions deploy send_quote
 
 After deployment, copy the URL printed by the CLI into `assets/.env` as
 `QUOTE_FUNCTION_URL`.
+
+The function can also send a confirmation email when a quote is requested. Set
+`SENDGRID_API_KEY` and `SENDGRID_FROM_EMAIL` as environment variables for the
+`send_quote` function (for example using `supabase secrets set`). If these are
+provided, the function will email the user after recording the request.
