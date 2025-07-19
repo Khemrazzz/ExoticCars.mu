@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/services/auth_service.dart';
 import '../../core/constants/color_scheme.dart';
-import '../admin/car_list_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -16,7 +15,7 @@ class HomeScreen extends StatelessWidget {
   final List<Map<String, dynamic>> cars = const [
     {
       'image':
-      'https://hftpatgseznkfbrrtcuf.supabase.co/storage/v1/object/public/car-images//aventador.jpg',
+          'https://hftpatgseznkfbrrtcuf.supabase.co/storage/v1/object/public/car-images//aventador.jpg',
       'brand': 'Lamborghini',
       'model': 'Aventador',
       'year': 2022,
@@ -25,14 +24,13 @@ class HomeScreen extends StatelessWidget {
     },
     {
       'image':
-      'https://hftpatgseznkfbrrtcuf.supabase.co/storage/v1/object/public/car-images//aventador.jpg',
+          'https://hftpatgseznkfbrrtcuf.supabase.co/storage/v1/object/public/car-images//aventador.jpg',
       'brand': 'Ferrari',
       'model': '488 GTB',
       'year': 2021,
       'price': 23000000,
       'features': ['Turbocharged', 'Leather Interior', 'Apple CarPlay']
     },
-    // Add more cars if needed
   ];
 
   @override
@@ -56,14 +54,9 @@ class HomeScreen extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             child: ElevatedButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const CarListScreen(),
-                  ),
-                );
+                context.push('/admin-cars'); 
               },
-              child: const Text('Admin: Manage Cars'),
+              child: const Text('Manage Cars'),
             ),
           ),
           Expanded(
@@ -86,9 +79,8 @@ class HomeScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         ClipRRect(
-                          borderRadius: const BorderRadius.vertical(
-                            top: Radius.circular(10),
-                          ),
+                          borderRadius:
+                              const BorderRadius.vertical(top: Radius.circular(10)),
                           child: Image.network(
                             car['image'],
                             height: 180,
@@ -112,8 +104,7 @@ class HomeScreen extends StatelessWidget {
                               const SizedBox(height: 4),
                               Text(
                                 '${car['year']} • Rs ${car['price']}',
-                                style:
-                                    const TextStyle(color: Colors.amberAccent),
+                                style: const TextStyle(color: Colors.amberAccent),
                               ),
                             ],
                           ),
