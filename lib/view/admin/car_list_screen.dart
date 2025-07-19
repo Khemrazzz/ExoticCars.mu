@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import '../car/edit_car_screen.dart';
 
 class CarListScreen extends StatefulWidget {
   const CarListScreen({super.key});
@@ -28,8 +29,12 @@ class _CarListScreenState extends State<CarListScreen> {
   }
 
   void goToEditCar(Map<String, dynamic> car) {
-    // Navigate to your EditCarScreen (to be created next)
-    // Navigator.push(context, MaterialPageRoute(builder: (_) => EditCarScreen(car: car)));
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => EditCarScreen(car: car),
+      ),
+    );
   }
 
   Future<void> deleteCar(String id) async {
