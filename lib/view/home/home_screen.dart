@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/services/auth_service.dart';
 import '../../core/constants/color_scheme.dart';
+import '../admin/car_list_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -49,60 +50,82 @@ class HomeScreen extends StatelessWidget {
           )
         ],
       ),
-      body: ListView.builder(
-        padding: const EdgeInsets.all(16),
-        itemCount: cars.length,
-        itemBuilder: (context, index) {
-          final car = cars[index];
-            return GestureDetector(
-              onTap: () {
-                context.push('/car/$index', extra: car);
-              },
-            child: Card(
-              color: AppColors.surface,
-              margin: const EdgeInsets.symmetric(vertical: 12),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ClipRRect(
-                    borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(10)),
-                    child: Image.network(
-                      car['image'],
-                      height: 180,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                    ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const CarListScreen(),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(12),
+                );
+              },
+              child: const Text('Admin: Manage Cars'),
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              padding: const EdgeInsets.all(16),
+              itemCount: cars.length,
+              itemBuilder: (context, index) {
+                final car = cars[index];
+                return GestureDetector(
+                  onTap: () {
+                    context.push('/car/$index', extra: car);
+                  },
+                  child: Card(
+                    color: AppColors.surface,
+                    margin: const EdgeInsets.symmetric(vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          '${car['brand']} ${car['model']}',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
+                        ClipRRect(
+                          borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(10),
+                          ),
+                          child: Image.network(
+                            car['image'],
+                            height: 180,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
                           ),
                         ),
-                        const SizedBox(height: 4),
-                        Text(
-                          '${car['year']} • Rs ${car['price']}',
-                          style: const TextStyle(color: Colors.amberAccent),
+                        Padding(
+                          padding: const EdgeInsets.all(12),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${car['brand']} ${car['model']}',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                '${car['year']} • Rs ${car['price']}',
+                                style:
+                                    const TextStyle(color: Colors.amberAccent),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
                   ),
-                ],
-              ),
+                );
+              },
             ),
-          );
-        },
+          ),
+        ],
       ),
     );
   }
