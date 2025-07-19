@@ -35,6 +35,9 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isAdmin =
+        Supabase.instance.client.auth.currentUser?.userMetadata?['is_admin'] ==
+            true;
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -50,15 +53,16 @@ class HomeScreen extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: ElevatedButton(
-              onPressed: () {
-                context.push('/admin-cars'); 
-              },
-              child: const Text('Manage Cars'),
+          if (isAdmin)
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: ElevatedButton(
+                onPressed: () {
+                  context.push('/admin-cars');
+                },
+                child: const Text('Manage Cars'),
+              ),
             ),
-          ),
           Expanded(
             child: ListView.builder(
               padding: const EdgeInsets.all(16),
