@@ -13,18 +13,20 @@ class AddCarScreen extends StatefulWidget {
 
 class _AddCarScreenState extends State<AddCarScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _brandController = TextEditingController();
-  final _modelController = TextEditingController();
-  final _yearController = TextEditingController();
-  final _priceController = TextEditingController();
-  final _featuresController = TextEditingController();
-  File? _selectedImage;
+  final TextEditingController _brand = TextEditingController();
+  final TextEditingController _model = TextEditingController();
+  final TextEditingController _year = TextEditingController();
+  final TextEditingController _price = TextEditingController();
+  final TextEditingController _features = TextEditingController();
+  File? _imageFile;
+
+  final _picker = ImagePicker();
 
   Future<void> pickImage() async {
-    final picked = await ImagePicker().pickImage(source: ImageSource.gallery);
+    final picked = await _picker.pickImage(source: ImageSource.gallery);
     if (picked != null) {
       setState(() {
-        _selectedImage = File(picked.path);
+        _imageFile = File(picked.path);
       });
     }
   }
@@ -33,29 +35,41 @@ class _AddCarScreenState extends State<AddCarScreen> {
     return StorageService.uploadCarImage(file);
   }
 
-  Future<void> addCar() async {
-    if (!_formKey.currentState!.validate() || _selectedImage == null) return;
-
-    final imageUrl = await uploadImage(_selectedImage!);
-    if (imageUrl == null) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Image upload failed')));
+  Future<void> submitCar() async {
+    if (!_formKey.currentState!.validate() || _imageFile == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please complete all fields & upload image")),
+      );
       return;
     }
 
-    final response = await Supabase.instance.client.from('cars').insert({
-      'brand': _brandController.text.trim(),
-      'model': _modelController.text.trim(),
-      'year': int.parse(_yearController.text),
-      'price': double.parse(_priceController.text),
-      'features': _featuresController.text.trim(),
+    final imageUrl = await uploadImage(_imageFile!);
+    if (imageUrl == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Failed to upload image")),
+      );
+      return;
+    }
+
+    final supabase = Supabase.instance.client;
+    final response = await supabase.from('cars').insert({
+      'brand': _brand.text.trim(),
+      'model': _model.text.trim(),
+      'year': int.parse(_year.text.trim()),
+      'price': double.parse(_price.text.trim()),
+      'features': _features.text.trim(),
       'image_url': imageUrl,
     });
 
-    if (response != null) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Car added successfully')));
+    if (response.error == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Car uploaded successfully")),
+      );
       Navigator.pop(context);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error: ${response.error!.message}")),
+      );
     }
   }
 
@@ -63,49 +77,55 @@ class _AddCarScreenState extends State<AddCarScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Add New Car')),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
-        child: SingleChildScrollView(
-          child: Form(
+        child: Form(
             key: _formKey,
             child: Column(
               children: [
                 TextFormField(
-                    controller: _brandController,
-                    decoration: const InputDecoration(labelText: 'Brand'),
-                    validator: (v) => v!.isEmpty ? 'Required' : null),
+                  controller: _brand,
+                  decoration: const InputDecoration(labelText: 'Brand'),
+                  validator: (value) =>
+                      value == null || value.isEmpty ? 'Required' : null,
+                ),
                 TextFormField(
-                    controller: _modelController,
-                    decoration: const InputDecoration(labelText: 'Model'),
-                    validator: (v) => v!.isEmpty ? 'Required' : null),
+                  controller: _model,
+                  decoration: const InputDecoration(labelText: 'Model'),
+                  validator: (value) =>
+                      value == null || value.isEmpty ? 'Required' : null,
+                ),
                 TextFormField(
-                    controller: _yearController,
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(labelText: 'Year'),
-                    validator: (v) => v!.isEmpty ? 'Required' : null),
+                  controller: _year,
+                  decoration: const InputDecoration(labelText: 'Year'),
+                  keyboardType: TextInputType.number,
+                  validator: (value) =>
+                      value == null || value.isEmpty ? 'Required' : null,
+                ),
                 TextFormField(
-                    controller: _priceController,
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(labelText: 'Price'),
-                    validator: (v) => v!.isEmpty ? 'Required' : null),
+                  controller: _price,
+                  decoration: const InputDecoration(labelText: 'Price'),
+                  keyboardType: TextInputType.number,
+                  validator: (value) =>
+                      value == null || value.isEmpty ? 'Required' : null,
+                ),
                 TextFormField(
-                    controller: _featuresController,
-                    maxLines: 3,
-                    decoration: const InputDecoration(labelText: 'Features')),
+                  controller: _features,
+                  decoration: const InputDecoration(labelText: 'Features'),
+                ),
                 const SizedBox(height: 16),
-                _selectedImage != null
-                    ? Image.file(_selectedImage!, height: 150)
+                _imageFile != null
+                    ? Image.file(_imageFile!, height: 150)
                     : const Text('No image selected'),
                 const SizedBox(height: 10),
-                ElevatedButton.icon(
-                  icon: const Icon(Icons.image),
-                  label: const Text('Pick Image'),
+                ElevatedButton(
                   onPressed: pickImage,
+                  child: const Text('Pick Car Image'),
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: addCar,
-                  child: const Text('Add Car'),
+                  onPressed: submitCar,
+                  child: const Text('Submit Car'),
                 ),
               ],
             ),
